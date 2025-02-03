@@ -6,8 +6,6 @@ import { WorkoutFormComponent } from './components/workoutform/workoutform.compo
 import { WorkoutListComponent } from './components/workout-list/workout-list.component';
 import { Workout } from './shared/workout.model';
 
-
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,32 +18,31 @@ import { Workout } from './shared/workout.model';
       </div>
 
       <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mt-6">
-      <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Workout List</h2>
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Workout List</h2>
 
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
-    <input type="text" id="search" placeholder="Search by name" [(ngModel)]="searchTerm" 
-      class="w-full md:w-1/2 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-200">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
+          <input type="text" id="search" placeholder="Search by name" [(ngModel)]="searchTerm" (input)="resetPagination()" 
+            class="w-full md:w-1/2 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-200">
 
-    <select id="filterType" [(ngModel)]="filterType" 
-      class="w-full md:w-1/3 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-200">
-      <option value="">All Workout Types</option>
-      <option value="Running">Running</option>
-      <option value="Cycling">Cycling</option>
-      <option value="Swimming">Swimming</option>
-      <option value="Yoga">Yoga</option>
-      <option value="Weightlifting">Weightlifting</option>
-    </select>
-  </div>
+          <select id="filterType" [(ngModel)]="filterType" (change)="resetPagination()" 
+            class="w-full md:w-1/3 border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-200">
+            <option value="">All Workout Types</option>
+            <option value="Running">Running</option>
+            <option value="Cycling">Cycling</option>
+            <option value="Swimming">Swimming</option>
+            <option value="Yoga">Yoga</option>
+            <option value="Weightlifting">Weightlifting</option>
+          </select>
+        </div>
 
-  <app-workout-list 
-    [workoutList]="paginatedWorkouts" 
-    (workoutDeleted)="deleteWorkout($event)" 
-    [currentPage]="currentPage"  
-    [totalPages]="totalPages"   
-    (pageChange)="goToPage($event)">  
-  </app-workout-list>
-</div>
-
+        <app-workout-list 
+          [workoutList]="paginatedWorkouts" 
+          (workoutDeleted)="deleteWorkout($event)" 
+          [currentPage]="currentPage"  
+          [totalPages]="totalPages"   
+          (pageChange)="goToPage($event)">  
+        </app-workout-list>
+      </div>
     </div>
   `,
   styles: []
@@ -79,18 +76,40 @@ export class AppComponent {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = Math.min(startIndex + this.itemsPerPage, this.filteredWorkouts.length);
     this.totalPages = Math.ceil(this.filteredWorkouts.length / this.itemsPerPage);
+    
     return this.filteredWorkouts.slice(startIndex, endIndex);
   }
 
   addWorkoutToList(workoutData: Workout) {
     this.workoutList.push(workoutData);
+    this.resetPagination();
   }
 
-  deleteWorkout(index: number) {
-    this.workoutList.splice(index, 1);
+  deleteWorkout(indexInPage: number) {
+    const actualIndex = (this.currentPage - 1) * this.itemsPerPage + indexInPage;
+    if (actualIndex >= 0 && actualIndex < this.filteredWorkouts.length) {
+      const globalIndex = this.workoutList.indexOf(this.filteredWorkouts[actualIndex]);
+      if (globalIndex !== -1) {
+        this.workoutList.splice(globalIndex, 1);
+      }
+    }
+    this.adjustPaginationAfterDelete();
   }
 
   goToPage(page: number) {
-    this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  resetPagination() {
+    this.currentPage = 1;
+  }
+
+  adjustPaginationAfterDelete() {
+    this.totalPages = Math.ceil(this.filteredWorkouts.length / this.itemsPerPage);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = Math.max(1, this.totalPages); 
+    }
   }
 }
