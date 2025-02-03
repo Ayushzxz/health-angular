@@ -38,42 +38,29 @@ import { Workout } from '../../shared/workout.model'; // Import the Workout inte
 
 
 <div class="mt-4 flex justify-center items-center space-x-2" *ngIf="workoutList && workoutList.length > 0">
-<button 
-    (click)="prevPage()" 
-    [disabled]="currentPage === 1" 
-    class="px-4 py-2 rounded-lg text-sm font-medium transition-all
-           bg-white border border-gray-300 text-gray-700
-           hover:bg-gray-100 hover:border-gray-400
-           disabled:opacity-50 disabled:cursor-not-allowed">
-    &larr; Previous
+  <!-- Previous Button -->
+  <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 disabled:opacity-50">
+    Previous
   </button>
 
   <!-- Page Number Buttons -->
-  <ng-container *ngFor="let page of pages">
-    <button 
-      (click)="goToPage(page)" 
-      class="px-4 py-2 rounded-lg text-sm font-semibold transition-all
-             border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [class.bg-blue-600]="page === currentPage"
-      [class.text-white]="page === currentPage"
-      [class.text-gray-700]="page !== currentPage"
-      [class.border-gray-300]="page !== currentPage"
-      [class.hover:bg-blue-600]="page !== currentPage"
-      [class.hover:text-white]="page !== currentPage">
-      {{ page }}
-    </button>
-  </ng-container>
+  <button *ngFor="let page of pages" (click)="goToPage(page)" 
+    class="px-4 py-2 border rounded-md text-sm font-medium" 
+    [class.bg-blue-500]="page === currentPage" 
+    [class.text-white]="page === currentPage" 
+    [class.text-gray-700]="page !== currentPage" 
+    [class.hover:bg-blue-600]="page !== currentPage">
+    {{ page }}
+  </button>
 
   <!-- Next Button -->
   <button 
-    (click)="nextPage()" 
-    [disabled]="currentPage === totalPages" 
-    class="px-4 py-2 rounded-lg text-sm font-medium transition-all 
-           bg-blue-600 text-white shadow-md 
-           hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 
-           disabled:bg-gray-300 disabled:cursor-not-allowed">
-    Next &rarr;
-  </button>
+  (click)="nextPage()" 
+  [disabled]="currentPage === totalPages" 
+  class="px-5 py-2.5 border rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md transition-all">
+  Next
+</button>
+
 </div>
 
   `,
