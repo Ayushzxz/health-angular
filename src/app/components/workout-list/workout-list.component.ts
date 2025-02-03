@@ -39,25 +39,25 @@ import { Workout } from '../../shared/workout.model'; // Import the Workout inte
 
 <div class="mt-6 flex justify-center items-center gap-3" *ngIf="workoutList && workoutList.length > 0">
   <!-- Previous Button -->
-  <button 
-    (click)="prevPage()" 
-    [disabled]="currentPage === 1" 
-    class="px-4 py-2 rounded-lg text-sm font-medium transition-all
-           bg-white border border-gray-300 text-gray-700
-           hover:bg-gray-100 hover:border-gray-400
-           disabled:opacity-50 disabled:cursor-not-allowed">
-    &larr; Previous
+  <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 disabled:opacity-50">
+    Previous
   </button>
 
   <!-- Page Number Buttons -->
-  <button *ngFor="let page of pages" (click)="goToPage(page)" 
-    class="px-4 py-2 border rounded-md text-sm font-medium" 
-    [class.bg-blue-500]="page === currentPage" 
-    [class.text-white]="page === currentPage" 
-    [class.text-gray-700]="page !== currentPage" 
-    [class.hover:bg-blue-600]="page !== currentPage">
-    {{ page }}
-  </button>
+  <ng-container *ngFor="let page of pages">
+    <button 
+      (click)="goToPage(page)" 
+      class="px-4 py-2 rounded-lg text-sm font-semibold transition-all
+             border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      [class.bg-blue-600]="page === currentPage"
+      [class.text-white]="page === currentPage"
+      [class.text-gray-700]="page !== currentPage"
+      [class.border-gray-300]="page !== currentPage"
+      [class.hover:bg-blue-600]="page !== currentPage"
+      [class.hover:text-white]="page !== currentPage">
+      {{ page }}
+    </button>
+  </ng-container>
 
   <!-- Next Button -->
   <button 
