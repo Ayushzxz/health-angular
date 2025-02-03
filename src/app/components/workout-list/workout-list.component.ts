@@ -37,9 +37,8 @@ import { Workout } from '../../shared/workout.model'; // Import the Workout inte
 </div>
 
 
-<div class="mt-6 flex justify-center items-center gap-3" *ngIf="workoutList?.length">
-  <!-- Previous Button -->
-  <button 
+<div class="mt-4 flex justify-center items-center space-x-2" *ngIf="workoutList && workoutList.length > 0">
+<button 
     (click)="prevPage()" 
     [disabled]="currentPage === 1" 
     class="px-4 py-2 rounded-lg text-sm font-medium transition-all
