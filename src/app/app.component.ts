@@ -13,11 +13,12 @@ import { Workout } from './shared/workout.model';
   template: `
     <div class="min-h-screen bg-gradient-to-r from-blue-50 to-blue-200 flex flex-col items-center justify-center py-6">
       <app-header></app-header>
-      <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mt-6">
+      
+      <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mt-6 bg-opacity-90 backdrop-blur-md border border-white/20">
         <app-workout-form (workoutAdded)="addWorkoutToList($event)"></app-workout-form>
       </div>
 
-      <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mt-6">
+      <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6 mt-6 bg-opacity-90 backdrop-blur-md border border-white/20">
         <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Workout List</h2>
 
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">

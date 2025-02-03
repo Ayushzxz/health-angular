@@ -8,7 +8,7 @@ import { Workout } from '../../shared/workout.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="bg-white bg-opacity-50 backdrop-blur-lg border border-white/30 rounded-4xl mx-auto mt-6 max-w-md w-full p-6 shadow-lg transition-opacity duration-500 animate-fadeIn">
+    <div class="bg-white bg-opacity-50 backdrop-blur-lg border border-white/30 rounded-4xl mx-auto mt-6 max-w-md w-full p-6 transition-opacity duration-500 animate-fadeIn">
       <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">🏋️ Add Your Workout</h2>
 
       <!-- Username -->
@@ -16,7 +16,7 @@ import { Workout } from '../../shared/workout.model';
         <label for="Username" class="block text-gray-700 font-medium mb-1">User Name:</label>
         <div class="relative">
           <input type="text" id="Username" [(ngModel)]="Username"
-            class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm placeholder:text-gray-400"
+            class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder:text-gray-400"
             placeholder="Enter your name">
           <span *ngIf="usernameError" class="text-red-500 text-sm absolute mt-1">{{ usernameError }}</span>
         </div>
@@ -26,7 +26,7 @@ import { Workout } from '../../shared/workout.model';
       <div class="mb-4">
         <label for="workoutType" class="block text-gray-700 font-medium mb-1">Workout Type:</label>
         <select id="workoutType" [(ngModel)]="workoutType"
-          class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm">
+          class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
           <option value="" disabled selected>Select Workout Type</option>
           <option value="Cardio">🏃‍♂️ Cardio</option>
           <option value="Strength">💪 Strength</option>
@@ -42,7 +42,7 @@ import { Workout } from '../../shared/workout.model';
         <label for="workoutMinutes" class="block text-gray-700 font-medium mb-1">Duration (Minutes):</label>
         <div class="relative">
           <input type="number" id="workoutMinutes" [(ngModel)]="workoutMinutes" min="1"
-            class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
+            class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             placeholder="Enter duration in minutes">
           <span *ngIf="workoutMinutesError" class="text-red-500 text-sm absolute mt-1">{{ workoutMinutesError }}</span>
         </div>
@@ -50,7 +50,7 @@ import { Workout } from '../../shared/workout.model';
 
       <!-- Add Workout Button -->
       <button (click)="addWorkout()"
-        class="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95">
+        class="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-3 rounded-lg transition-all duration-300 active:scale-95">
         Add Workout
       </button>
 

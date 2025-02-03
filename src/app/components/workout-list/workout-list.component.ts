@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WorkoutChartComponent } from '../workout-chart/workout-chart.component'; 
+import { WorkoutChartComponent } from '../workout-chart/workout-chart.component';
 import { Workout } from '../../shared/workout.model';
 
 @Component({
@@ -10,67 +10,85 @@ import { Workout } from '../../shared/workout.model';
   template: `
     <app-workout-chart [workoutList]="workoutList"></app-workout-chart>
 
-    <table class="min-w-full divide-y divide-gray-200" *ngIf="workoutList && workoutList.length > 0">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let workout of workoutList; let i = index; trackBy: trackByIndex">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ workout.personName }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ workout.type }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ workout.minutes }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <button (click)="deleteWorkout(i)" class="text-red-500 hover:text-red-700">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngIf="workoutList && workoutList.length > 0; else noWorkouts">
+      <table class="min-w-full table-auto shadow-lg rounded-lg overflow-hidden">
+        <thead class="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Name</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Type</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Minutes</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-gray-100">
+          <tr *ngFor="let workout of workoutList; let i = index; trackBy: trackByIndex" class="border-t">
+            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ workout.personName }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ workout.type }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ workout.minutes }}</td>
+            <td class="px-6 py-4 text-sm font-medium">
+              <button (click)="deleteWorkout(i)" class="text-red-600 hover:text-red-800 transition-colors duration-200">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div *ngIf="!workoutList || workoutList.length === 0" class="mt-4 text-center p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm">
-      <p class="text-gray-700 text-lg font-medium">No workouts found.</p>
-    </div>
-
-    <!-- Pagination Controls -->
-    <div class="mt-4 flex justify-center items-center space-x-2" *ngIf="workoutList && workoutList.length > 0">
-      <!-- Previous Button -->
-      <button (click)="prevPage()" 
-              [disabled]="currentPage === 1" 
-              class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 disabled:opacity-50">
-        Previous
-      </button>
-
-      <!-- Page Number Buttons -->
-      <ng-container *ngFor="let page of pages">
-        <button 
-          (click)="goToPage(page)" 
-          [attr.aria-current]="page === currentPage ? 'page' : null"
-          class="px-4 py-2 rounded-lg text-sm font-semibold transition-all
-                 border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          [class.bg-blue-600]="page === currentPage"
-          [class.text-white]="page === currentPage"
-          [class.text-gray-700]="page !== currentPage"
-          [class.border-gray-300]="page !== currentPage"
-          [class.hover:bg-blue-600]="page !== currentPage"
-          [class.hover:text-white]="page !== currentPage">
-          {{ page }}
+      <div class="flex justify-center items-center mt-6">
+        <button (click)="prevPage()" [disabled]="currentPage === 1" class="pagination-btn">
+          Previous
         </button>
-      </ng-container>
 
-      <!-- Next Button -->
-      <button 
-        (click)="nextPage()" 
-        [disabled]="currentPage === totalPages" 
-        class="px-5 py-2.5 border rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md transition-all">
-        Next
-      </button>
+        <ng-container *ngFor="let page of pages">
+          <button 
+            (click)="goToPage(page)" 
+            [attr.aria-current]="page === currentPage ? 'page' : null"
+            class="pagination-btn"
+            [ngClass]="{
+              'bg-blue-600 text-white': page === currentPage,
+              'bg-white text-gray-600': page !== currentPage
+            }">
+            {{ page }}
+          </button>
+        </ng-container>
+
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-btn">
+          Next
+        </button>
+      </div>
     </div>
+
+    <ng-template #noWorkouts>
+      <div class="mt-6 text-center p-6 bg-gray-200 rounded-lg shadow-md">
+        <p class="text-gray-700 text-lg font-semibold">No workouts found.</p>
+      </div>
+    </ng-template>
   `,
-  styles: []
+  styles: [
+    `
+      .pagination-btn {
+        padding: 0.75rem 1.5rem;
+        border: 2px solid #ddd;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #4a4a4a;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .pagination-btn:hover:not(:disabled) {
+        background-color: #edf2f7;
+        color: #3182ce;
+      }
+
+      .pagination-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    `
+  ]
 })
 export class WorkoutListComponent {
   @Input() workoutList: Workout[] = [];
@@ -79,7 +97,6 @@ export class WorkoutListComponent {
   @Output() workoutDeleted = new EventEmitter<number>();
   @Output() pageChange = new EventEmitter<number>();
 
-  // Generate an array of page numbers dynamically
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
